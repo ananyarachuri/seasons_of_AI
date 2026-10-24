@@ -46,6 +46,27 @@ h1 em{font-style:normal;background:linear-gradient(90deg,var(--cold),#7fa7cf 30%
 .legend{display:flex;flex-wrap:wrap;gap:8px 22px;align-items:center;margin-top:14px;font-family:var(--mono);font-size:12px;color:var(--muted)}
 .legend .ramp{width:140px;height:10px;background:linear-gradient(90deg,#163f78,#6f9ccc,#efe9dd,#f0a046,#c8321e,#7d1414)}
 
+.intro{max-width:62ch;margin:14px 0 0;font-size:19px}
+.howto{margin-top:34px;border:1px solid var(--line);background:var(--card);padding:22px 24px}
+.howto h2{font-size:30px;font-weight:700;margin-bottom:16px}
+.hgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:20px 28px}
+.hgrid div{min-width:0}
+.hgrid b{font-family:var(--display);font-size:22px;text-transform:uppercase;letter-spacing:.02em;display:block;margin:8px 0 4px}
+.hgrid p{margin:0;font-size:16px;color:var(--muted)}
+.sw{display:block;width:44px;height:10px}
+.inshort{margin-top:18px;font-size:19px;max-width:62ch}
+.inshort b,.why b{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;font-weight:500;margin-right:6px}
+.why{font-size:15px!important;color:var(--muted);border-left:3px solid var(--yc);padding-left:10px;margin-top:2px!important}
+.winter .inshort{font-size:20px}
+.pattern{padding-block:80px 0}
+.pattern h2{font-size:clamp(48px,8vw,96px);font-weight:900}
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:2px;background:var(--line);margin-top:24px;counter-reset:s}
+.steps div{background:var(--bg);padding:22px;min-width:0}
+.steps b{font-family:var(--display);font-size:26px;text-transform:uppercase;display:block;margin-bottom:6px}
+.steps b::before{counter-increment:s;content:counter(s) " ";color:var(--hot)}
+.steps p{margin:0;font-size:16px}
+.pattern .take{margin-top:22px;font-size:20px;max-width:64ch}
+
 /* FILTERS */
 .bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:6;background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(8px);border-block:1px solid var(--line);margin-top:40px}
 body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
@@ -129,17 +150,27 @@ footer p{font-size:16px;color:var(--muted);margin:0 0 10px}
     <div class="hero-top"><span class="lbl">An almanac of artificial intelligence</span><span class="lbl">1950 — 2026</span></div>
     <h1>Seasons<br>of <em>AI</em></h1>
     <p class="deck">Seventy-six years of hot hype, hard frosts, and the breakthroughs that thawed them.</p>
+    <p class="intro">AI did not grow in a straight line. It went through cycles: big excitement and funding (a <b>summer</b>), disappointment when it couldn't deliver, then cuts and silence (a <b>winter</b>). This page tells that story like a weather record, so you can see the warm and cold years at a glance.</p>
   </div>
   <div class="in">
     <div class="stripes" id="stripes" aria-label="One stripe per year, colored by AI optimism and funding. Select a stripe to jump to that year."></div>
     <div class="axis"><span>1950</span><span>1974 ❄</span><span>1987 ❄</span><span>2012</span><span>2026</span></div>
-    <div class="legend"><span>Frost</span><span class="ramp"></span><span>Heat</span><span>· One stripe per year. Color shows the climate of hype and funding, my own reading of the sources, not a measured dataset.</span></div>
+    <div class="legend"><span>Cold</span><span class="ramp"></span><span>Hot</span><span>· One stripe = one year. Click any stripe to jump there.</span></div>
+    <div class="howto">
+      <h2>How to read this</h2>
+      <div class="hgrid">
+        <div><span class="sw" style="background:linear-gradient(90deg,#163f78,#efe9dd,#c8321e)"></span><b>Color = excitement</b><p>Red years had lots of money, attention and progress. Blue years had little. This is an illustrative scale based on the sources, not measured data.</p></div>
+        <div><span class="sw" style="background:#2f8f5b"></span><b>Season = era</b><p>Each period of AI history is named like a season: Spring, Summer, Thaw, Heatwave. The real era name sits beside it.</p></div>
+        <div><span class="sw" style="background:#1f4e8c"></span><b>Winter = collapse</b><p>An "AI winter" is a period when funding and interest crashed. The two blue bands explain why each happened and what it cost.</p></div>
+        <div><span class="sw" style="background:var(--ink)"></span><b>Thermometer</b><p>As you scroll, the gauge in the corner shows the year you're reading and how hot the AI climate was.</p></div>
+      </div>
+    </div>
   </div>
 </header>
 
 <nav class="bar g" aria-label="Filter">
   <div class="in">
-    <span class="lbl" style="margin-right:6px">Forecast for</span>
+    <span class="lbl" style="margin-right:6px">Show</span>
     <button class="chip" id="f-all" data-f="all" aria-pressed="true">All seasons</button>
     <button class="chip" id="f-hist" data-f="hist" aria-pressed="false">Historical milestones</button>
     <button class="chip" id="f-winter" data-f="winter" aria-pressed="false">AI winters</button>
@@ -149,10 +180,24 @@ footer p{font-size:16px;color:var(--muted);margin:0 0 10px}
 
 <main id="tl"></main>
 
+<section class="pattern g">
+  <div class="in">
+    <span class="lbl">The big picture</span>
+    <h2>The pattern repeats</h2>
+    <div class="steps">
+      <div><b>Breakthrough</b><p>A new idea works in the lab: logic programs in the 1950s, expert systems in the 1980s, deep learning in 2012.</p></div>
+      <div><b>Hype</b><p>Money and predictions pour in. Experts promise human-level AI soon.</p></div>
+      <div><b>Reality check</b><p>The technology hits limits: too little data, too little computing power, or systems that break on real-world problems.</p></div>
+      <div><b>Winter or thaw</b><p>Funding collapses, or a new ingredient (GPUs, data, cloud) arrives and starts the next summer.</p></div>
+    </div>
+    <p class="take"><b>The key lesson:</b> AI's progress has depended as much on hardware, data and money as on clever ideas. Neural networks were invented in 1958 but only took off in 2012, once GPUs and the cloud made them practical.</p>
+  </div>
+</section>
+
 <section class="concepts g" data-c="concept">
   <div class="in">
-    <span class="lbl">Field notes</span>
-    <h2>Reading the climate</h2>
+    <span class="lbl">Key ideas</span>
+    <h2>Three ideas to know</h2>
     <div class="cgrid">
       <div>
         <h3>Two schools</h3>
@@ -267,6 +312,49 @@ const S=[
  ]}
 ];
 
+/* plain-English layer */
+const SHORT={
+ "1950 – 1973":"Scientists invent the idea of AI and are sure thinking machines are only a few years away.",
+ "1980 – 1987":"Businesses buy “expert systems” that copy a human expert's rules, and AI becomes a product for the first time.",
+ "1989 – 2011":"Out of the spotlight, the three missing ingredients arrive: lots of data, fast GPU chips and cheap cloud computing.",
+ "2012 – 2021":"Neural networks finally work at scale, and computers learn to see, translate and play games better than people.",
+ "2022 – 2026":"AI that writes, draws and talks reaches the public, and every major tech company races to build bigger models."
+};
+const WSHORT={
+ "I":"AI promised human-level thinking but could only solve toy problems, so governments stopped paying for it.",
+ "II":"Companies spent heavily on expert systems that turned out expensive and fragile, and the AI business market crashed."
+};
+const WHY={
+ 1950:"Gave the field its central question and a way to test it.",
+ 1956:"The official birth of AI as a research field.",
+ 1958:"The first machine that learned from examples instead of rules.",
+ 1959:"Introduced the idea that computers can improve with experience.",
+ 1966:"Showed how easily people believe a machine understands them.",
+ 1969:"Its critique helped trigger the first AI winter.",
+ 1980:"Proved AI could make real money for a business.",
+ 1982:"Sparked a global race of government AI funding.",
+ 1986:"Made multi-layer neural networks trainable, the method still used today.",
+ 1989:"First neural network doing useful real-world work.",
+ 1997:"The moment the public saw a computer beat a world champion.",
+ 2006:"Cloud rental meant you no longer needed your own supercomputer.",
+ 2007:"Turned gaming chips into the engine of modern AI.",
+ 2009:"Gave AI the huge labeled dataset it needed to learn from.",
+ 2011:"AI moved into everyday consumer products.",
+ 2012:"The start of the deep learning era: data + GPUs + neural nets.",
+ 2014:"Machines began creating images, not just recognizing them.",
+ 2015:"Created the lab that later built ChatGPT.",
+ 2016:"Beat humans at a game thought to need intuition.",
+ 2017:"The “T” in ChatGPT; the design behind almost every modern AI model.",
+ 2018:"Recognized the three people who kept neural nets alive through the winters.",
+ 2020:"Showed that making models bigger made them dramatically smarter.",
+ 2021:"AI started creating art from plain words.",
+ 2022:"Brought AI to hundreds of millions of ordinary users almost overnight.",
+ 2023:"Turned AI into a competition between the world's biggest companies.",
+ 2024:"AI research earned science's top prize, and governments began writing rules.",
+ 2025:"AI moved from answering questions to completing tasks.",
+ 2026:"The story is still being written."
+};
+
 /* ---------- build ---------- */
 const esc=s=>s.replace(/&/g,'&amp;').replace(/</g,'&lt;');
 let h='';
@@ -274,14 +362,16 @@ S.forEach((s,i)=>{
   if(s.winter){
     h+=`<section class="winter g" data-c="winter" data-season="Winter ${s.num}"><canvas></canvas><div class="in">
       <span class="lbl">Severe frost warning · ${s.range}</span>
-      <h2>AI Winter ${s.num}</h2><span class="temp">Hype index low: ${s.low}°</span>
+      <h2>AI Winter ${s.num}</h2><span class="temp">Coldest point: ${s.low}°</span>
+      <p class="inshort"><b>In short</b>${WSHORT[s.num]}</p>
       <div class="cols"><div><h4>What froze it</h4><ul>${s.causes.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div>
       <div><h4>The damage</h4><ul>${s.impacts.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div></div></div></section>`;
   } else {
     h+=`<section class="season g" style="--sc:${s.sc}" data-season="${s.name}"><div class="in">
       <div class="s-head"><h2>${s.name}</h2><div class="meta"><span class="lbl">${s.range}</span><b>${s.title}</b><p>${s.note}</p></div></div>
+      <p class="inshort"><b>In short</b>${SHORT[s.range]}</p>
       <div class="entries">${s.ev.map(v=>{const t=temp(v.y);return `<article class="ev${v.big?' big':''}" id="y${v.y}" data-c="${v.c}" data-y="${v.y}" style="--yc:${ink(t)}">
-        <div class="yr">${v.y}</div><span class="tmp">${t>0?'+':''}${t}°</span><h3>${esc(v.t)}</h3><p>${esc(v.d)}</p>
+        <div class="yr">${v.y}</div><span class="tmp">${t>0?'+':''}${t}°</span><h3>${esc(v.t)}</h3><p>${esc(v.d)}</p>${WHY[v.y]?`<p class="why"><b>Why it mattered</b>${esc(WHY[v.y])}</p>`:''}
         <div class="who">${v.w.map(p=>`<span>${esc(p)}</span>`).join('')}</div></article>`}).join('')}</div></div></section>`;
   }
 });
@@ -313,7 +403,7 @@ chips.forEach(c=>c.onclick=()=>apply(c.dataset.f));
 /* thermometer */
 const th=document.getElementById('thermo'),merc=document.getElementById('merc'),ty=document.getElementById('ty'),ts=document.getElementById('ts');
 function setThermo(y,season,t){
-  ty.textContent=y;ts.textContent=`${season} · ${t>0?'+':''}${t}°`;
+  ty.textContent=y;ts.textContent=`${season} · ${t>=20?'very hot':t>=10?'hot':t>=2?'mild':t>=-4?'cool':'frozen'}`;
   merc.style.height=Math.max(8,((t+12)/43)*100)+'%';merc.style.background=color(t);
 }
 const io=new IntersectionObserver(es=>{es.forEach(e=>{if(!e.isIntersecting)return;const el=e.target;
